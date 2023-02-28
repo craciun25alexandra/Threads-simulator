@@ -1,0 +1,48 @@
+Se initializeaza cozile si stivele si se citeste din fisier.
+    ~Add_task~
+Se separa in variabile prioritatea si timpul, iar apoi pt fiecare task se aloca
+o variabila de tip task, al caror campuri sunt setate cu cele de mai sus, plus
+top ul stivei de id. La fiecare pas, cu ajutorul unui contor, se adauga cate un
+id, iar la fiecarui task se asociaza topul si se face pop. Apoi se adauga in
+ordine elementul in coada de waiting. 
+    ~print~
+Pentru print, se apeleaza functiile de afisare specifice pentru fiecare coada.
+    ~get_task~
+Se cauta taskul in lista de running, apoi in cea de waiting, iar ulterior in
+finish. Daca se gaseste, functia de cautare returneaza in cazul primelor 2 cozi
+timpul ramas (fiind apelata cu Tasktime), iar in cazul listei de finish, timpul
+executat (fiind apelata cu Taskexec)
+    ~get_thread~
+Prima data se compara nr dat cu nr max de threaduri posibile, iar apoi,
+se verifica daca RunQ este goala(in acest caz, threadul e idle). Apoi se cauta
+in coada threadul, functia de cautare returnand o variabila care are ca si
+campuri id ul si timpul, informatii ce trebuie afisate. Daca functia retuneaza
+NULL (variabila de tip ThreadFound nu a fost setata, ramane null), atunci
+threadul e idle.
+    ~run~
+Initial se adauga in coada de running cat timp threadurile sunt disponibile
+sau cat timp sunt taskuri in WaitQ. apoi, se calculeaza nr de pasi in care se
+in care se va executa comanda de run. Daca nr dat de run e multiplu de Q,
+atunci procedeul se repeta de nr/q ori, iar in caz contrar, de nr/q+1. Daca
+timpul dat de run e mai mare decat Q, valoarea cu care se executa comanda de
+run e Q, nr in caz contrar. In for, daca nu mai sunt taskuri de rulat, sau nr
+de run e depasit, nu se mai executa nimic. Daca sunt elemente in coada de run
+si daca nr ramas din running este mai mic decat valoarea cu care rulau
+taskurile, acestea se vor rula cu nr. Altfel, daca maximul din coada de run
+este mai mic decat valoarea, taskurile se ruleaza cu maximul aflat. Se adauga
+val la timpul total, se scade val din timpul "nr"-dat de run si se executa
+functia de run, unde sunt 2 cazuri: daca timpul cu care functia e apelata (val)
+este mai mare sau egal decat timpul unui task, aceast task e mutat in finishQ,
+scos din coada de run, iar threadul si id ul devin available (id ul e pus in
+ordine crescatoare in stiva), sau daca valoarea e mai mica, taskurile raman in
+RunQ si timpul lor scade cu val. Dupa rularea functiei RunComand, se reseteaza
+timpul in cazul in care lista de running este goala, se umple la finalul
+acestei iteratii, iar la urmatoarea trebuie sa se execute comanda run cu noile
+taskuri puse. Apoi, se mai pune in run cat mai sunt threaduri disponibile.
+    ~finish~ 
+Cat timp exista taskuri in lista de waiting, se pun in running repetat cat
+timp exista threaduri disponibile si se calculeaza maximul de timp al acestora.
+Se executa comanda run cu acest maxim (daca timpul necesar pt cea mai
+mare valoare de timp este realizat, se vor efectua toate taskurile), si se
+adauga in timpul final.
+    Punctajul pe local este 135 p.
